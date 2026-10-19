@@ -1,4 +1,4 @@
-# iCog Labs – AI Video Generation (training assignments)
+# iCog Labs – AI Video Generation 
 
 | Task | Folder | What it does | Runs on |
 |---|---|---|---|
