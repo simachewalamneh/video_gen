@@ -66,7 +66,7 @@ def main(a):
     tok = AutoTokenizer.from_pretrained(a.model)
     model = AutoModelForSeq2SeqLM.from_pretrained(a.model, torch_dtype=torch.float32).to(dev)
     total = sum(p.numel() for p in model.parameters())
-    model = get_peft_model(model, LoraConfig(task_type="SEQ_2_SEQ_LM", r=a.rank, lora_alpha=2 * a.rank, lora_dropout=0.1, target_modules=["q", "k", "v", "o"]))
+    model = get_peft_model(model, LoraConfig(task_type="SEQ_2_SEQ_LM", r=a.rank, lora_alpha=2 * a.rank, lora_dropout=0.1, target_modules=["q", "k", "v", "o"] + (["wi_0", "wi_1", "wo"] if a.ffn else [])))
     train_p = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"trainable {train_p/1e6:.2f}M / {total/1e6:.0f}M ({100*train_p/total:.2f}%)")
     model.gradient_checkpointing_enable(); model.enable_input_require_grads()
@@ -87,10 +87,11 @@ def main(a):
         return tot / max(n, 1)
 
     run_epoch(train, "round1-uniform")
+    peak_r1 = torch.cuda.max_memory_allocated() / 2**30
     # --- iterative error correction: error-focused replay ---
     model.eval(); pool = train[:a.replay_pool]; losses = []
     with torch.no_grad():
-        for ids, mask, y in batches(tok, pool, 64, dev, a.max_len):
+        for ids, mask, y in batches(tok, pool, 16, dev, a.max_len):
             losses += per_example_loss(model, ids, mask, y).tolist()
     losses = np.array(losses); losses = np.minimum(losses, np.percentile(losses, 95))  # clip outliers / noisy pairs
     hard = np.random.choice(len(pool), a.replay_pool // 2, p=losses / losses.sum())
@@ -113,7 +114,8 @@ def main(a):
     unc = np.array(unc); q = np.array([chrf(h, r) for h, r in zip(greedy, refs)])
     corr = float(np.corrcoef(ranks(unc), ranks(q))[0, 1]); keep = unc <= np.median(unc)
     C = lambda h: sacrebleu.corpus_chrf(h, [refs]).score
-    res = dict(trainable_params_m=train_p / 1e6, trainable_pct=100 * train_p / total, train_s=train_s, peak_gpu_gb=peak,
+    res = dict(trainable_params_m=train_p / 1e6, trainable_pct=100 * train_p / total, train_s=train_s, peak_gpu_gb=peak, peak_gpu_gb_round1=peak_r1,
+               lora_weights_plus_states_gb=(total * 4 + train_p * 12) / 2**30,
                full_ft_adam_fp32_est_gb=total * 16 / 2**30,
                chrf_base_zero_shot=C(base), chrf_lora_greedy=C(greedy), chrf_lora_mc_mbr=C(mbr),
                bleu_lora_greedy=sacrebleu.corpus_bleu(greedy, [refs]).score,
@@ -135,5 +137,6 @@ if __name__ == "__main__":
     p.add_argument("--tsv", default=None); p.add_argument("--n_train", type=int, default=8000); p.add_argument("--n_test", type=int, default=200)
     p.add_argument("--rank", type=int, default=8); p.add_argument("--bs", type=int, default=16); p.add_argument("--max_len", type=int, default=64)
     p.add_argument("--lr", type=float, default=1e-3); p.add_argument("--k", type=int, default=4, help="MC-dropout passes")
+    p.add_argument("--ffn", action="store_true", help="also adapt FFN layers (wi_0, wi_1, wo)")
     p.add_argument("--replay_pool", type=int, default=4000); p.add_argument("--seed", type=int, default=0)
     main(p.parse_args())
