@@ -1,7 +1,7 @@
 {
  "trainable_params_m": 2.555904,
  "trainable_pct": 0.8514662933541879,
- "train_s": 1419.8600616455078,
+ "train_s": 1438.112534046173,
  "peak_gpu_gb": 4.091207981109619,
  "peak_gpu_gb_round1": 4.091207981109619,
  "lora_weights_plus_states_gb": 1.1468100547790527,

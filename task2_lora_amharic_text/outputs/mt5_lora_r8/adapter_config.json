@@ -32,9 +32,9 @@
   "rank_pattern": {},
   "revision": null,
   "target_modules": [
+    "v",
     "k",
     "o",
-    "v",
     "q"
   ],
   "target_parameters": null,

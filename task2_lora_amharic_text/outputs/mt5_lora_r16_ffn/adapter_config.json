@@ -32,12 +32,12 @@
   "rank_pattern": {},
   "revision": null,
   "target_modules": [
-    "wi_0",
-    "k",
-    "wi_1",
-    "v",
-    "q",
     "o",
+    "q",
+    "wi_1",
+    "k",
+    "wi_0",
+    "v",
     "wo"
   ],
   "target_parameters": null,
