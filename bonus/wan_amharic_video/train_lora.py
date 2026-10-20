@@ -11,7 +11,7 @@ def main(a):
     seed_all(a.seed); dev = "cuda"; dtype = pick_dtype(a.dtype); os.makedirs(a.out, exist_ok=True)
     meta = load_metadata(a.data_dir)
     caps = [m["caption"] for m in meta]
-    cache = f"{a.out}/cache.pt"
+    cache = f"{a.out}/cache_{len(meta)}.pt"  # keyed by clip count so a stale cache is never reused
     if os.path.exists(cache):
         embs, lats = torch.load(cache)
     else:
@@ -30,7 +30,7 @@ def main(a):
     print("cached:", tuple(embs.shape), tuple(lats.shape))
 
     from diffusers import WanTransformer3DModel, WanPipeline
-    from diffusers.utils import get_peft_model_state_dict
+    from peft.utils import get_peft_model_state_dict
     from peft import LoraConfig
     tr = WanTransformer3DModel.from_pretrained(MODEL_ID, subfolder="transformer", torch_dtype=dtype).to(dev)
     tr.requires_grad_(False)
@@ -42,6 +42,7 @@ def main(a):
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, a.steps)
     scaler = torch.amp.GradScaler("cuda", enabled=dtype == torch.float16)
     print(f"trainable LoRA params: {sum(p.numel() for p in params)/1e6:.2f}M | dtype {dtype}")
+    assert len(embs) == len(lats) == len(meta), (len(embs), len(lats), len(meta))
     torch.cuda.reset_peak_memory_stats(); log = []; t0 = time.time(); N = len(meta)
     for step in range(1, a.steps + 1):
         tot = 0.0
