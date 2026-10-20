@@ -1,0 +1,9 @@
+diffusers>=0.33
+transformers
+accelerate
+peft
+imageio
+imageio-ffmpeg
+pillow
+matplotlib
+sentencepiece
