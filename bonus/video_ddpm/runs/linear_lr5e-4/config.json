@@ -1,0 +1,21 @@
+{
+ "out": "runs/linear_lr5e-4",
+ "schedule": "linear",
+ "T": 200,
+ "epochs": 30,
+ "bs": 32,
+ "lr": 0.0005,
+ "ema": 0.99,
+ "ch": 32,
+ "frames": 8,
+ "size": 32,
+ "n_clips": 1500,
+ "video_dir": null,
+ "sampler": "ddim",
+ "ddim_steps": 50,
+ "n_samples": 8,
+ "seed": 0,
+ "amp": true,
+ "grad_ckpt": false,
+ "resume": false
+}
