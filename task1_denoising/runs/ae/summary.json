@@ -1,0 +1,61 @@
+{
+ "rows": [
+  {
+   "noise": "gaussian:0.1",
+   "noisy_psnr": 20.32123272705078,
+   "noisy_ssim": 0.7109776544570923,
+   "classical_psnr": 24.95717190551758,
+   "pass1_psnr": 27.058710235595704,
+   "pass1_ssim": 0.9040764970779419,
+   "unc_err_corr": 0.2441416452115383
+  },
+  {
+   "noise": "gaussian:0.2",
+   "noisy_psnr": 14.79191692352295,
+   "noisy_ssim": 0.4854895062446594,
+   "classical_psnr": 21.294208587646484,
+   "pass1_psnr": 23.20171533203125,
+   "pass1_ssim": 0.811495304107666,
+   "unc_err_corr": 0.24581802230025773
+  },
+  {
+   "noise": "gaussian:0.3",
+   "noisy_psnr": 11.93580795288086,
+   "noisy_ssim": 0.3576826364994049,
+   "classical_psnr": 18.709159118652344,
+   "pass1_psnr": 21.125801193237304,
+   "pass1_ssim": 0.7379966139793396,
+   "unc_err_corr": 0.21086621907149558
+  },
+  {
+   "noise": "saltpepper:0.05",
+   "noisy_psnr": 18.09354136657715,
+   "noisy_ssim": 0.6991279106140137,
+   "classical_psnr": 25.57233499145508,
+   "pass1_psnr": 31.91021273803711,
+   "pass1_ssim": 0.9706296343803406,
+   "unc_err_corr": 0.4345300394721454
+  },
+  {
+   "noise": "saltpepper:0.1",
+   "noisy_psnr": 15.079406898498535,
+   "noisy_ssim": 0.5464625802040101,
+   "classical_psnr": 24.81952362060547,
+   "pass1_psnr": 29.677070022583006,
+   "pass1_ssim": 0.953571494102478,
+   "unc_err_corr": 0.44932152249850654
+  },
+  {
+   "noise": "saltpepper:0.2",
+   "noisy_psnr": 12.052026748657227,
+   "noisy_ssim": 0.3846636850833893,
+   "classical_psnr": 22.78069158935547,
+   "pass1_psnr": 25.923450088500978,
+   "pass1_ssim": 0.9018021998405457,
+   "unc_err_corr": 0.4527507599543912
+  }
+ ],
+ "train_s": 50.02650761604309,
+ "peak_mem_mb": 350.47998046875,
+ "params_m": 0.61719
+}
