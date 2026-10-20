@@ -1,0 +1,9 @@
+torch
+transformers
+peft
+datasets
+sacrebleu
+sentencepiece
+accelerate
+matplotlib
+numpy
