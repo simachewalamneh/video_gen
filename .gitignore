@@ -2,3 +2,6 @@ __pycache__/
 *.pt
 data/
 cache.pt
+*.pt
+data/
+__pycache__/
