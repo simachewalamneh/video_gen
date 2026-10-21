@@ -1,0 +1,13 @@
+{
+ "video": "../bonus/video_ddpm/runs/cosine_lr2e-3/real_test.gif",
+ "ckpt": "runs/unet/ckpt.pt",
+ "passes": 2,
+ "noise": "gaussian:0.15",
+ "frames": 8,
+ "size": "128x64",
+ "psnr_noisy": 19.334816932678223,
+ "psnr_denoised": 27.04111409187317,
+ "flicker_clean": 0.0609886534512043,
+ "flicker_noisy": 0.13357673585414886,
+ "flicker_denoised": 0.07695018500089645
+}
