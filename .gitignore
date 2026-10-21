@@ -5,3 +5,4 @@ cache.pt
 *.pt
 data/
 __pycache__/
+*.zip
