@@ -1,6 +1,6 @@
 # AI Video Generation: denoising, video diffusion and LoRA fine-tuning
 
-Assignments from the AI Video Generation training at iCog Labs (trainer: Bisrat Berhanu, October 17, 2026), by Simachew Alamneh. Everything is sized for a free Colab T4 (15 GB) and was run there, except the video-denoising demo, which ran on a laptop CPU.
+Everything is sized for a free Colab T4 (15 GB) and was run there, except the video-denoising demo, which ran on a laptop CPU.
 
 ## What is in this repository
 
