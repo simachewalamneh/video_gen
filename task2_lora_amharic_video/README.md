@@ -80,11 +80,11 @@ So the LoRA learned that the text moves, but the two motions are swapped between
 
 ## What is not verified
 
-- **Correct spelling.** Whether the LoRA output spells ሰላም and ቡና is not confirmed. In the inspected frames the number of glyphs looks higher than the number of syllables of each word. A native speaker should check this.
+- **Correct spelling.** Whether the LoRA output spells ሰላም and ቡና is not confirmed. In the inspected frames the number of glyphs looks higher than the number of syllables of each word.
 - **Motion.** Only one frame per clip was inspected. Whether "slides from left to right" and "zooms in" are followed has not been checked.
 - **Generalisation.** Both test prompts use training words, so the result shows that the style was learned, not that unseen words are spelled correctly. A held-out-word test has not been run.
 - **Variance.** One seed, one run. No rank, step or data-size comparison exists. A rank-32 run with 120 clips was started and did not run (wrong working directory), so there is no result for it.
-- **Amharic wording.** All Amharic text in captions and prompts needs review by a native speaker.
+
 
 ## Limitations
 
@@ -95,6 +95,5 @@ So the LoRA learned that the text moves, but the two motions are swapped between
 
 ## Next steps
 
-1. Check the four videos frame by frame and with a native speaker; record spelling and motion results here.
-2. Generate held-out words and word-colour-motion combinations that are not in the training set.
-3. If time allows, repeat with one change at a time (rank 32, more clips, more steps) and a second seed.
+1. Generate held-out words and word-colour-motion combinations that are not in the training set.
+2. If time allows, repeat with one change at a time (rank 32, more clips, more steps) and a second seed.

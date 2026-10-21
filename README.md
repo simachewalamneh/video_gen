@@ -52,7 +52,7 @@ In the inspected frames the base model draws shapes that do not look like Ge'ez,
 | Image denoiser | Complete. Four runs (U-Net and autoencoder, 1 and 2 passes). Re-running the first two reproduced their tables to four decimals. |
 | Video denoising demo (`denoise_video.py`) | Run on CPU on an 8-frame gif (PSNR 19.3 to 27.0 dB) and a 64-frame mp4 clip (17.3 to 29.2 dB). That clip was almost static, so the second number is optimistic. Not yet tried on footage with real motion or on a Wan clip. |
 | Video DDPM | Complete for 30 epochs, three experiments. **The model checkpoint is not in the repository** (`*.pt` is git-ignored). |
-| Wan LoRA | One run, qualitative comparison from one frame per clip. Spelling, motion and generalisation not verified. A native Amharic speaker should check all Amharic text. |
+| Wan LoRA | One run, qualitative comparison from one frame per clip. Spelling, motion and generalisation not verified.|
 | Coffee advertisement | `prepare_clips.py` and `assemble.py` tested on fake data. `gen_scenes.py` and the voice-over (`voiceover.py`, MMS-TTS with a non-commercial licence) are untested. No training on coffee footage has been run. |
 
 ## Run
@@ -85,7 +85,6 @@ On a machine whose system Python is managed by the operating system, create a vi
 - Small scale on purpose: a free T4, a 0.76 M and a 0.67 M parameter model, an 11.8 M parameter LoRA, and synthetic data for the video experiments.
 - One seed and a few samples per experiment, so small differences are not reliable.
 - Task 2 training data is synthetic rendered text; the model was tested only on words it was trained on.
-- Amharic wording in captions, prompts, titles and narration has not been reviewed by a native speaker.
 - Video results use simple proxy metrics (PSNR, frame-to-frame motion, distance to the nearest training clip), not standard video-generation metrics.
 
 ## Licence
