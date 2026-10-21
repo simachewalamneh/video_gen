@@ -1,0 +1,41 @@
+"""Apply the trained Task 1 denoiser to a real video, frame by frame.
+Adds synthetic noise to each frame, denoises it, and writes a side-by-side video (clean | noisy | denoised)
+plus per-video PSNR. Works on any mp4, e.g. a Task 2 Wan output:
+  python denoise_video.py --video ../task2_lora_amharic_video/outputs/samples/lora_0.mp4 --ckpt runs/unet/ckpt.pt"""
+import argparse, json, os
+import numpy as np, torch, imageio.v2 as imageio
+from denoise import DenoiseNet, corrupt, psnr, unrolled, seed_all
+
+
+def main(a):
+    seed_all(a.seed); dev = "cuda" if torch.cuda.is_available() else "cpu"
+    ck = torch.load(a.ckpt, map_location=dev); c = ck["config"]
+    model = DenoiseNet(c["ch"], c["arch"] == "unet", c["unc"]).to(dev)
+    model.load_state_dict(ck["model"]); model.eval()
+    frames = [f[..., :3] for f in imageio.get_reader(a.video)][:a.max_frames]
+    H, W = frames[0].shape[0] // 4 * 4, frames[0].shape[1] // 4 * 4   # network downsamples by 4
+    x = torch.from_numpy(np.stack(frames)[:, :H, :W]).permute(0, 3, 1, 2).float() / 127.5 - 1
+    g = torch.Generator(dev).manual_seed(a.seed); to01 = lambda z: (z.clamp(-1, 1) + 1) / 2
+    rows, ps_noisy, ps_den = [], [], []
+    with torch.no_grad():
+        for i in range(0, len(x), a.bs):
+            clean = x[i:i + a.bs].to(dev); noisy = corrupt(clean, a.noise, a.level, g)
+            den = unrolled(model, noisy, c["refine"])[-1][0].clamp(-1, 1)
+            for k in range(len(clean)):
+                ps_noisy.append(psnr(to01(noisy[k:k+1]), to01(clean[k:k+1]))); ps_den.append(psnr(to01(den[k:k+1]), to01(clean[k:k+1])))
+            side = torch.cat([clean, noisy, den], 3)                       # clean | noisy | denoised
+            rows += list(((to01(side) * 255).byte().permute(0, 2, 3, 1).cpu().numpy()))
+    os.makedirs(a.out, exist_ok=True)
+    imageio.mimsave(f"{a.out}/denoised_video.mp4", rows, fps=a.fps)
+    res = dict(video=a.video, noise=f"{a.noise}:{a.level}", frames=len(rows), size=f"{W}x{H}",
+               psnr_noisy=float(np.mean(ps_noisy)), psnr_denoised=float(np.mean(ps_den)))
+    json.dump(res, open(f"{a.out}/video_summary.json", "w"), indent=1); print(json.dumps(res, indent=1))
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+    p.add_argument("--video", required=True); p.add_argument("--ckpt", default="runs/unet/ckpt.pt"); p.add_argument("--out", default="runs/video_demo")
+    p.add_argument("--noise", default="gaussian", choices=["gaussian", "saltpepper"]); p.add_argument("--level", type=float, default=0.15)
+    p.add_argument("--max_frames", type=int, default=64); p.add_argument("--bs", type=int, default=8)
+    p.add_argument("--fps", type=int, default=8); p.add_argument("--seed", type=int, default=0)
+    main(p.parse_args())

@@ -6,3 +6,4 @@ cache.pt
 data/
 __pycache__/
 *.zip
+!task1_denoising/runs/unet/ckpt.pt
