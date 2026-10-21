@@ -66,7 +66,17 @@ Both words are in the training set.
 
 **Base versus LoRA, frame 8 of each clip (`outputs/comparison.png`).**
 - Base model: jumbled white shapes that do not look like Ge'ez script. On the second prompt some forms look Latin.
-- LoRA: clean, evenly stroked letterforms in the style of Ge'ez script, on backgrounds closer to the training data (a darker blue on the first prompt, in place of the base model's bright cyan).
+- LoRA: clean, evenly stroked letterforms in the style of Ge'ez script, on backgrounds closer to the training data (a darker blue on the first prompt, in place of the base model's bright cyan). The background colour follows the prompt (blue, then black).
+
+**Motion, measured on all 17 frames of each clip** (white-pixel mask: horizontal centre and width of the text):
+
+| Clip | Prompt asks for | What the text does | Measured |
+|---|---|---|---|
+| `base_0`, `base_1` | slide / zoom | nothing (static) | centre moves at most 2 px, width constant |
+| `lora_0` (ሰላም) | slides from left to right | grows, does not slide | centre 185 to 183 px; width 122 to 146 px (+20%), height 43 to 55 px (+28%) |
+| `lora_1` (ቡና) | zooms in | slides, does not grow | centre 207 to 147 px (right to left); width constant at about 162 px |
+
+So the LoRA learned that the text moves, but the two motions are swapped between the prompts, and the slide goes right to left, whereas training slides left to right. Training zoom enlarges the text by a factor of 1.83; the growth in `lora_0` is much weaker. With two prompts and one seed this cannot say why. Possible causes (untested): too little training to tie the motion words to the motion, and only about 10 training clips per motion.
 
 ## What is not verified
 
