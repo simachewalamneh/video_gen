@@ -1,0 +1,17 @@
+{
+ "out": "runs/unet_r1",
+ "data_dir": null,
+ "n_images": 10000,
+ "size": 32,
+ "arch": "unet",
+ "noise": "mixed",
+ "unc": true,
+ "nll_w": 0.1,
+ "refine": 1,
+ "ch": 32,
+ "epochs": 15,
+ "bs": 128,
+ "lr": 0.002,
+ "amp": true,
+ "seed": 0
+}
