@@ -12,7 +12,7 @@ def seed_all(s):
     random.seed(s); np.random.seed(s); torch.manual_seed(s); torch.cuda.manual_seed_all(s)
 
 
-# ---------------- data + preprocessing ----------------
+#  data + preprocessing 
 def build_splits(a):
     from torchvision import datasets, transforms as T
     tf = T.Compose([T.Resize(a.size), T.CenterCrop(a.size), T.ToTensor(), T.Normalize([0.5] * 3, [0.5] * 3)])  # -> [-1,1]
@@ -23,7 +23,7 @@ def build_splits(a):
     return [Subset(ds, idx[:i]), Subset(ds, idx[i:j]), Subset(ds, idx[j:])]  # train / val / test
 
 
-# ---------------- synthetic noise ----------------
+#  synthetic noise 
 def corrupt(x, kind, level=None, gen=None):
     """x in [-1,1]. level: sigma (gaussian, on [0,1] scale) or pixel fraction (saltpepper). None -> random level per image."""
     B, dev = x.size(0), x.device
@@ -40,7 +40,7 @@ def corrupt(x, kind, level=None, gen=None):
     return out
 
 
-# ---------------- model ----------------
+#  model 
 class Res(nn.Module):
     def __init__(s, i, o):
         super().__init__()
@@ -73,7 +73,7 @@ class DenoiseNet(nn.Module):
         return (x + o[:, :3], o[:, 3:].clamp(-6, 3)) if s.unc else (x + o, None)
 
 
-# ---------------- metrics / baselines ----------------
+#   metrics / baselines  
 def psnr(a, b):  # a,b in [0,1]; per-image PSNR averaged
     return (10 * torch.log10(1.0 / (a - b).pow(2).flatten(1).mean(1).clamp_min(1e-10))).mean().item()
 
