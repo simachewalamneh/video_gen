@@ -1,0 +1,22 @@
+{
+ "prompts": [
+  "Slow motion close-up of glowing roasted coffee beans falling through warm amber light on a dark background, tiny golden particles, shallow depth of field, cinematic, premium commercial",
+  "Traditional Ethiopian clay jebena pouring dark coffee into small white cups on a tray, delicate steam rising, warm inviting light, close-up, cinematic, shallow depth of field",
+  "Macro shot of a coffee cup on a dark reflective surface, steam forming a graceful glowing golden flame-shaped swirl above the cup, golden sparkles, slow motion, cinematic product commercial",
+  "Steaming coffee cup beside a clay jebena and roasted coffee beans on a dark background with golden highlights, slow camera push-in, polished premium product commercial"
+ ],
+ "negative": "text, letters, watermark, logo, distorted cup, extra hands, malformed hands, blurry, flicker, low quality, overexposed",
+ "args": {
+  "out": "scenes",
+  "scenes": "3",
+  "height": 512,
+  "width": 288,
+  "frames": 33,
+  "steps": 25,
+  "cfg": 5.0,
+  "lora_dir": null,
+  "prefix": "",
+  "dtype": "auto",
+  "seed": 7
+ }
+}
