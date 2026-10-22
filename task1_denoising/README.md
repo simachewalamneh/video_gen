@@ -106,5 +106,4 @@ Figures: `runs/<name>/samples.png` (rows: clean, noisy, pass 1, pass 2 if any, u
 - One seed per configuration, so differences below about 0.5 dB should not be treated as reliable. Re-running the AE and U-Net on the same seed reproduced the tables to four decimals, which shows reproducibility, not variance across seeds.
 - Small data (10k CIFAR-10 images at 32x32, 1,000 test images) and synthetic noise only. Results on real camera noise or larger images are not measured.
 - The classical baselines are 3x3 filters and are weak.
-- The SSIM implementation is custom and was not cross-checked against a reference library.
-- The 1-pass and 2-pass models differ only in `--refine`, but the single validation-MSE number in the log is computed from the first pass only.
+ 

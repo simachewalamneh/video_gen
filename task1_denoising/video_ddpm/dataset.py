@@ -46,7 +46,8 @@ def preprocess(clip, T, S):
     idx = torch.linspace(0, x.shape[0] - 1, T).round().long()
     x = x[idx]
     h, w = x.shape[1:]
-    m = min(h, w)
+    m = min(h, w) # center-crop to square
+    
     x = x[:, (h - m) // 2:(h - m) // 2 + m, (w - m) // 2:(w - m) // 2 + m]
     if m != S:
         x = F.interpolate(x[:, None], size=(S, S), mode="area" if m > S else "bilinear")[:, 0]
