@@ -91,17 +91,7 @@ Times are positions in the final video (they overlap by the 0.375 s dissolves).
 - Total GPU work: four scene generations plus one regeneration of scene 3. Final file size: `<fill in>`.
 - Evaluation was visual only; there is no quantitative quality metric, and scenes were selected by eye (selection bias).
 
-## 6. Limitations
-
-- No coffee-specific LoRA: the Ethiopian coffee look depends only on the prompts. A LoRA on real footage was prepared (`coffee_lora/prepare_clips.py`) but never trained because no footage was collected.
-- The golden flame-shaped steam in scene 3 is prompt-driven; the model was never shown examples of it.
-- Each clip is only 2 s long and slowed by frame blending, which is not true motion interpolation; blending can soften fast motion.
-- Upscaling 288 x 512 to 720 x 1280 adds no detail, so scenes look soft at full size.
-- From the code logic (please check in the video): titles 2 to 4 appear without a fade-in, because the previous title is still drawn during the dissolve.
-- The Amharic titles and narration were not checked by a native speaker, and the narration model is non-commercial; do not use the video commercially. Any music or branding would need its own rights.
-- Wan2.1 and umt5 licences should be checked before any reuse.
-
-## 7. Reproduce
+## 6. Reproduce
 
 Colab (T4 GPU), with the repository zip uploaded:
 ```python
