@@ -13,7 +13,16 @@ Definitions below are the standard formulations. The metric script was not avail
 | **sharp** | Variance of the Laplacian of each frame (edge/detail strength). | unbounded, depends on resolution and normalization | more edge detail (noise also raises it) |
 | **bright** | Mean pixel luminance of each frame. | 0 (black) to 1 (white) | brighter image |
 
-## 2. Results
+## 2. Metric types and good values
+
+| Metric | Type | Good value | Low value means | High value means |
+|---|---|---|---|---|
+| flicker | Negative: lower is better | under about 0.005, and under about 0.2 of the motion value | stable, consistent frames | the picture pulses or jitters from frame to frame |
+| sharp | Positive: higher is better | no universal number; higher than the base model or real footage at the same resolution | blurry, soft, smeared | crisp edges and detail, but noise and over-sharpening also push it up |
+| motion | Target range: neither extreme is good | about 0.01-0.05 for gentle movement | below about 0.003 means a nearly frozen image | above about 0.08 means fast or chaotic movement |
+| bright | Target range: neither extreme is good | about 0.30-0.50 for a well-exposed look, down to about 0.25 for a deliberately moody look | below about 0.15 means underexposed and dark | above about 0.7 means washed out |
+
+## 3. Results
 
 | file | motion | flicker | sharp | bright |
 |---|---|---|---|---|
@@ -30,7 +39,7 @@ Definitions below are the standard formulations. The metric script was not avail
 | lora_4 | 0.0006 | 0.0004 | 0.00745 | 0.321 |
 | lora_5 | 0.0012 | 0.0003 | 0.01307 | 0.172 |
 
-## 3. Means
+## 4. Means
 
 | Metric | Base mean | LoRA mean | Change |
 |---|---|---|---|
@@ -39,7 +48,7 @@ Definitions below are the standard formulations. The metric script was not avail
 | sharp | 0.0035 | 0.0060 | +70% |
 | bright | 0.267 | 0.204 | -24% |
 
-## 4. Per-clip change (LoRA vs base)
+## 5. Per-clip change (LoRA vs base)
 
 | Clip | motion | flicker | sharp | bright |
 |---|---|---|---|---|
@@ -50,7 +59,7 @@ Definitions below are the standard formulations. The metric script was not avail
 | 4 | 0.0008 to 0.0006 (same) | 0.0004 to 0.0004 (same) | 0.00860 to 0.00745 (down) | 0.467 to 0.321 (down) |
 | 5 | 0.0017 to 0.0012 (same) | 0.0005 to 0.0003 (same) | 0.00208 to 0.01307 (up) | 0.170 to 0.172 (same) |
 
-## 5. Flicker relative to motion
+## 6. Flicker relative to motion
 
 | Clip | Base flicker/motion | LoRA flicker/motion |
 |---|---|---|
@@ -61,7 +70,7 @@ Definitions below are the standard formulations. The metric script was not avail
 | 4 | 0.50 | 0.67 |
 | 5 | 0.29 | 0.25 |
 
-## 6. Result
+## 7. Result
 
 - **Flicker:** reduced by 95% on average, from 0.0189 to 0.0010. The reduction is concentrated in clips 0 and 2, and in those clips flicker relative to motion also fell (0.84 to 0.09 and 1.07 to 0.24).
 - **Motion:** reduced by 58% on average, from 0.0232 to 0.0097. Clips 0 and 2 dropped; clip 2 fell from 0.0314 to 0.0038. Clips 3, 4 and 5 are near-static (below 0.002) in both versions.
